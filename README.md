@@ -1,4 +1,4 @@
-# Stabilizing selection
+# Stabilizing selection forward simulations
 
 Scripts, data, and figures for forward evolutionary simulations
 from Zhang et al. manuscript.
