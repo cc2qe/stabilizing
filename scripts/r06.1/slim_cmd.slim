@@ -1,0 +1,63 @@
+
+initialize() {
+    // lengths of regions
+    // reg_length = 100000;
+
+    // m1 mutation type: neutral
+    initializeMutationType("m1", dom_coeff, "f", 0);
+    m1.convertToSubstitution = F; // dont ignore this mutation after fixation
+    m1.color = "yellow";
+
+    // m2 mutation type: trait increasing
+    initializeMutationType("m2", dom_coeff, "f", 1);
+    m2.convertToSubstitution = F; // don't ignore this mutation after fixation
+    m2.color = "red";
+
+    // m3 mutation type: trait decreasing
+    initializeMutationType("m3", dom_coeff, "f", -1);
+    m3.convertToSubstitution = F; // don't ignore this mutation after fixation
+    m3.color = "blue";
+
+
+    // genomic element types and kind of mutation
+    initializeGenomicElementType("g1", c(m1, m2, m3), c(1, 1, 1));
+
+    initializeGenomicElement(g1, 0, reg_length - 1);
+
+    initializeRecombinationRate(recomb_rate);
+    initializeMutationRate(mu);
+}
+
+// fitness cost 
+fitness(m1) { return 1.0; }
+fitness(m2) { return 1.0; }
+fitness(m3) { return 1.0; }
+
+// create a population of N individuals
+1 {
+    sim.addSubpop("p1", pop_size);
+}
+
+// scale fitness by aggregating variants at end of each generation
+1: late() {
+    // width = stabilizing selection width
+    // beta = effect size of single variant on trait (uniform)
+
+    inds = sim.subpopulations.individuals;
+    up_mut = inds.countOfMutationsOfType(m2); // up trait variant m2
+    down_mut = inds.countOfMutationsOfType(m3);    // down trait variant m3
+
+    // calculate each individual's fitness    
+    inds.fitnessScaling = exp(-beta^2 * (up_mut - down_mut)^2 / (2 * width^2));
+
+    // progress
+    // if (sim.generation % 1000 == 0) {
+    //     print(sim.generation);
+    // }
+}
+
+100000 late() {
+    p1.outputVCFSample(pop_size, filePath=paste0(out_prefix, ".vcf"));
+}
+
+
