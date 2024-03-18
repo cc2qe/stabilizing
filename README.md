@@ -8,7 +8,7 @@ The `r06.1` directories contain the simulations included in the paper.
 These apply a stabilizing selection fitness model and measure LD as well
 as snp-pair effect correlation. Scripts adapted from an early implementation
 credited to Arun Durvasula. Details of this are in the
-[scripts] and [notebook](notebook) directories.
+[scripts](scripts) and [notebook](notebook) directories.
 
 ## emeraLD build
 I used Corbin Quick's [emeraLD](https://github.com/statgen/emeraLD) software to
