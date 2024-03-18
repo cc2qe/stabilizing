@@ -1,0 +1,4 @@
+[submodule "emeraLD"]
+	path = emeraLD
+	url = https://github.com/cc2qe/emeraLD
+	branch = snplist
